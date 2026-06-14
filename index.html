@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sekar Ayu</title>
+  <style>
+    :root {
+      --bg1: #ffd9e8;
+      --bg2: #dcecff;
+      --bg3: #fff7f9;
+      --ink: #2f4058;
+      --muted: rgba(47, 64, 88, .72);
+      --pink: #f4a8c1;
+      --pink2: #e98eb3;
+      --blue: #a9cdf6;
+      --blue2: #7fabeb;
+      --cream: #fffaf8;
+      --card: rgba(255, 255, 255, .72);
+      --card2: rgba(255, 255, 255, .88);
+      --line: rgba(127, 163, 214, .24);
+      --shadow: 0 20px 55px rgba(47, 64, 88, .14);
+      --shadow2: 0 16px 30px rgba(47, 64, 88, .10);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      color: var(--ink);
+      font-family: ui-serif, Georgia, 'Times New Roman', serif;
+      background:
+        radial-gradient(circle at 16% 8%, rgba(255,255,255,.9), transparent 20%),
+        radial-gradient(circle at 85% 14%, rgba(255,255,255,.75), transparent 18%),
+        radial-gradient(circle at 50% 120%, rgba(180,208,255,.42), transparent 30%),
+        linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 48%, var(--bg3) 100%);
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 50%;
+      filter: blur(1px);
+      opacity: .36;
+    }
+
+    body::before {
+      width: 180px; height: 180px;
+      top: -30px; left: -40px;
+      background: radial-gradient(circle, rgba(255,255,255,.94), rgba(244,168,193,.35) 65%, transparent 72%);
+    }
+
+    body::after {
+      width: 240px; height: 240px;
+      bottom: -80px; right: -70px;
+      background: radial-gradient(circle, rgba(255,255,255,.92), rgba(169,205,246,.38) 64%, transparent 72%);
+    }
+
+    .screen {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .screen.active { display: flex; }
+
+    .card {
+      width: min(1040px, 100%);
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.7);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-inner { padding: 28px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.62);
+      border: 1px solid rgba(255,255,255,.85);
+      font-size: 14px;
+      letter-spacing: .02em;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      margin-top: 16px;
+      font-size: clamp(40px, 5vw, 72px);
+      line-height: .98;
+      letter-spacing: -.02em;
+    }
+    h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.08;
+      letter-spacing: -.015em;
+      margin-top: 10px;
+    }
+    h3 {
+      font-size: 22px;
+      line-height: 1.18;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: clamp(16px, 2vw, 19px);
+      line-height: 1.88;
+      color: rgba(47, 64, 88, .92);
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    @media (max-width: 860px) {
+      .split { grid-template-columns: 1fr; }
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 16px;
+      padding: 14px 18px;
+      font: inherit;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+      box-shadow: 0 12px 26px rgba(105, 140, 185, .18);
+    }
+    .btn:active { transform: translateY(1px) scale(.99); }
+    .btn-primary {
+      color: #1f2d42;
+      background: linear-gradient(135deg, #ffd8e7, #d7ebff);
+    }
+    .btn-secondary {
+      color: white;
+      background: linear-gradient(135deg, #8bb6ef, #f08db7);
+    }
+    .btn-ghost {
+      color: var(--ink);
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(127, 163, 214, .18);
+      box-shadow: none;
+    }
+
+    .tiny { font-size: 13px; color: rgba(47, 64, 88, .62); line-height: 1.6; }
+    .error { min-height: 20px; color: #b14b6f; font-size: 14px; }
+
+    .door-wrap {
+      min-height: 74vh;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,.78), transparent 32%),
+        linear-gradient(180deg, rgba(247, 215, 231, .65), rgba(219, 234, 255, .7));
+    }
+
+    .door-scene {
+      width: min(800px, 100%);
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .door {
+      width: min(280px, 58vw);
+      height: min(360px, 68vw);
+      margin: 24px auto 0;
+      border-radius: 26px 26px 18px 18px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(120, 148, 190, .22);
+      background:
+        radial-gradient(circle at 25% 18%, rgba(244,168,193,.22), transparent 22%),
+        radial-gradient(circle at 75% 20%, rgba(169,205,246,.22), transparent 22%),
+        linear-gradient(180deg, rgba(255,255,255,.94), rgba(251, 248, 245, .88));
+      box-shadow: 0 24px 44px rgba(102, 126, 154, .18), inset 0 0 0 10px rgba(255,255,255,.32);
+      transform-origin: left center;
+      transition: transform .9s cubic-bezier(.22,1,.36,1), opacity .9s ease;
+    }
+    .door::before {
+      content: '';
+      position: absolute;
+      inset: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(123, 157, 202, .16);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.0), rgba(240,244,255,.18)),
+        radial-gradient(circle at 50% 70%, rgba(244,168,193,.12), transparent 35%);
+    }
+    .door-handle {
+      position: absolute;
+      right: 42px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 60px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #d89ab0, #f3c3d4);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,.65);
+    }
+    .door.open {
+      transform: perspective(1200px) rotateY(-88deg) translateX(-20px);
+      opacity: .1;
+    }
+
+    .lock-note {
+      margin-top: 22px;
+      display: grid;
+      gap: 14px;
+      justify-items: center;
+    }
+    .pin-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+    .pin-input {
+      width: min(320px, 82vw);
+      padding: 15px 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(123, 157, 202, .32);
+      background: rgba(255,255,255,.82);
+      font: inherit;
+      font-size: 18px;
+      outline: none;
+      box-shadow: inset 0 2px 7px rgba(52, 83, 118, .04);
+    }
+
+    .path {
+      min-height: 320px;
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.72);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.7), transparent 18%),
+        radial-gradient(circle at 80% 14%, rgba(255,255,255,.45), transparent 15%),
+        linear-gradient(180deg, rgba(255,255,255,.52), rgba(255,255,255,.18)),
+        linear-gradient(180deg, #def0ff 0%, #f7d8e7 54%, #fef8f6 100%);
+      box-shadow: inset 0 -50px 80px rgba(255,255,255,.35);
+    }
+    .path::before {
+      content: '';
+      position: absolute;
+      left: 50%; top: 0;
+      width: 280px; height: 100%;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.36));
+      clip-path: polygon(45% 0, 55% 0, 75% 100%, 25% 100%);
+      opacity: .44;
+    }
+
+    .ornaments {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .petal, .spark, .leaf, .dust {
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+      animation: floatUp linear infinite;
+      opacity: .72;
+    }
+    .petal {
+      width: 14px; height: 10px;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--pink) 55%, rgba(232,140,176,.18) 100%);
+      filter: blur(.2px);
+    }
+    .spark {
+      width: 6px; height: 6px;
+      background: rgba(255,255,255,.94);
+      box-shadow: 0 0 14px rgba(255,255,255,.8);
+    }
+    .leaf {
+      width: 12px; height: 8px;
+      background: radial-gradient(circle at 40% 40%, #fff, rgba(169,205,246,.94) 56%, rgba(127,174,235,.2) 100%);
+    }
+    .dust {
+      width: 3px; height: 3px;
+      background: rgba(255,255,255,.94);
+      box-shadow: 0 0 10px rgba(255,255,255,.68);
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(20vh) translateX(0) rotate(0deg); opacity: 0; }
+      10% { opacity: .72; }
+      100% { transform: translateY(-120vh) translateX(36px) rotate(360deg); opacity: 0; }
+    }
+
+    .chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(127, 163, 214, .16);
+      font-size: 13px;
+      color: rgba(47,64,88,.82);
+    }
+
+    .garden-stage {
+      min-height: 80vh;
+      display: grid;
+      gap: 18px;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 20% 12%, rgba(255,255,255,.58), transparent 16%),
+        radial-gradient(circle at 80% 18%, rgba(255,255,255,.42), transparent 15%),
+        linear-gradient(180deg, rgba(255,233,241,.7), rgba(223,238,255,.76));
+    }
+
+    .garden-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+
+    .zone {
+      grid-column: span 4;
+      min-height: 168px;
+      border-radius: 22px;
+      padding: 18px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(255,255,255,.8);
+      box-shadow: 0 12px 28px rgba(79,110,152,.11);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .zone:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(79,110,152,.15);
+      border-color: rgba(127,163,214,.34);
+    }
+    .zone::after {
+      content: '';
+      position: absolute;
+      inset: auto -24px -36px auto;
+      width: 150px; height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.72), transparent 70%);
+      opacity: .54;
+    }
+    .zone p {
+      font-size: 15px;
+      line-height: 1.76;
+    }
+    .zone small {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 13px;
+      color: rgba(47,64,88,.62);
+    }
+
+    @media (max-width: 920px) { .zone { grid-column: span 6; } }
+    @media (max-width: 640px) {
+      .card-inner, .garden-stage { padding: 18px; }
+      .zone { grid-column: span 12; }
+      .path { min-height: 230px; }
+      .door { width: min(220px, 62vw); height: min(300px, 80vw); }
+      .garden-grid { gap: 12px; }
+    }
+
+    .action-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(18, 29, 45, .38);
+      backdrop-filter: blur(10px);
+    }
+    .modal.active { display: flex; }
+    .modal-card {
+      width: min(760px, 100%);
+      max-height: min(86vh, 900px);
+      overflow: auto;
+      border-radius: 24px;
+      background: rgba(255,255,255,.94);
+      border: 1px solid rgba(255,255,255,.75);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .22);
+      padding: 24px;
+      position: relative;
+    }
+    .close {
+      position: sticky;
+      top: 0;
+      margin-left: auto;
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 0;
+      background: linear-gradient(135deg, #ffdbe7, #d5e9ff);
+      font-size: 22px;
+      cursor: pointer;
+      float: right;
+    }
+    .modal-title {
+      margin-top: 10px;
+      margin-bottom: 12px;
+      font-size: clamp(24px, 4vw, 36px);
+    }
+    .modal-text {
+      white-space: pre-wrap;
+      line-height: 1.95;
+      font-size: 17px;
+      color: rgba(47,64,88,.92);
+    }
+
+    .letter {
+      white-space: pre-wrap;
+      line-height: 2;
+      font-size: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.8), rgba(255,255,255,.96));
+      border: 1px solid rgba(127,163,214,.18);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: rgba(47,64,88,.64);
+      text-align: center;
+      letter-spacing: .01em;
+    }
+
+    .glow-line {
+      height: 1px;
+      width: 100%;
+      background: linear-gradient(90deg, transparent, rgba(127,163,214,.45), rgba(244,168,193,.45), transparent);
+      margin: 16px 0;
+    }
+
+    .sound-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 16px;
+    }
+    .sound-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(127,163,214,.18);
+      background: rgba(255,255,255,.72);
+      font-size: 13px;
+      color: rgba(47,64,88,.82);
+    }
+    .sound-pill.on { background: rgba(214,235,255,.82); }
+
+    .intro-title { max-width: 760px; }
+    .warm-box {
+      border-radius: 22px;
+      border: 1px solid rgba(127,163,214,.16);
+      background: rgba(255,255,255,.64);
+      padding: 18px;
+      box-shadow: var(--shadow2);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- DOOR -->
+    <section class="screen active" id="screen-door">
+      <div class="card door-wrap">
+        <div class="card-inner door-scene">
+          <span class="eyebrow">Sekar Ayu · a garden made for you</span>
+          <h1>Selamat datang, Ayu.</h1>
+          <p class="intro-title" style="margin: 14px auto 0;">
+            Aku tidak pandai merangkai bunga.
+            Jadi aku merangkai hal-hal yang selalu membuatku mengingatmu.
+          </p>
+
+          <div class="door" id="door" aria-hidden="true">
+            <div class="door-handle"></div>
+          </div>
+
+          <div class="lock-note">
+            <div class="pin-row">
+              <input id="pinInput" class="pin-input" type="password" inputmode="numeric" placeholder="Masukkan tanggal lahir (DDMMYYYY)" maxlength="8" />
+              <button id="unlockBtn" class="btn btn-primary">Buka pintu</button>
+            </div>
+            <div id="pinError" class="error"></div>
+            <div class="tiny">Petunjuk: format aman adalah 14062005.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section class="screen" id="screen-intro">
+      <div class="card">
+        <div class="card-inner split">
+          <div>
+            <span class="eyebrow">Langkah pertama</span>
+            <h2>Untuk Sekar Ayu</h2>
+            <p style="margin-top: 12px;">
+              Aku membangun tempat kecil ini dari hal-hal yang tanpa sadar selalu membawaku kembali padamu.
+            </p>
+            <p style="margin-top: 14px;">
+              Di sini, kamu boleh berjalan pelan-pelan. Setiap sudut menyimpan satu potongan ingatan, satu kalimat kecil, atau satu harapan yang kusimpan untukmu.
+            </p>
+            <div class="glow-line"></div>
+            <div id="chipsWrap" class="chips"></div>
+
+            <div class="sound-bar">
+              <button class="btn btn-secondary" id="enterGardenBtn">Masuk ke taman</button>
+              <button class="btn btn-ghost" id="soundInfoBtn">Suara bisa ditambahkan nanti</button>
+            </div>
+            <div class="tiny" style="margin-top:10px;">
+              Saat kamu punya file audio, kita bisa menempelkan suara kereta, ombak, angin, atau musik lembut ke tiap sudut.
+            </div>
+          </div>
+          <div class="path warm-box">
+            <div class="ornaments" id="introOrnaments"></div>
+            <div style="position: relative; z-index: 1; padding: 18px; display: grid; gap: 12px; align-content: center; min-height: 260px;">
+              <span class="eyebrow">pink · blue · warm</span>
+              <h3>Hangat, manis, dan sedikit tenang.</h3>
+              <p class="subtle">
+                Seperti taman sore hari: kelopak bergerak pelan, cahaya lembut, dan sesuatu yang terasa dekat tanpa harus keras.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GARDEN -->
+    <section class="screen" id="screen-garden">
+      <div class="card">
+        <div class="garden-stage">
+          <div class="grid" style="display:grid; gap: 8px;">
+            <span class="eyebrow">Sekar Ayu</span>
+            <h2>Taman yang dibangun dari hal-hal yang mengingatkanku padamu</h2>
+            <p class="subtle">Klik setiap sudut untuk membuka potongan cerita. Hadiah utama menunggu setelah semuanya ditemukan.</p>
+          </div>
+
+          <div class="garden-grid" id="gardenGrid">
+            <article class="zone" data-zone="tulip">
+              <h3>🌷 Di antara tulip</h3>
+              <p>Di antara tulip-tulip yang tumbuh pelan di bawah langit biru lembut, aku selalu teringat padamu.</p>
+              <small>Klik untuk membuka pesan</small>
+            </article>
+            <article class="zone" data-zone="train">
+              <h3>🚂 Sudut stasiun kereta</h3>
+              <p>Suara kereta tidak pernah benar-benar terdengar biasa sejak aku sering menjemput dan mengantarmu.</p>
+              <small>Klik untuk membuka kenangan</small>
+            </article>
+            <article class="zone" data-zone="strawberry">
+              <h3>🍓 Jalur stroberi</h3>
+              <p>Ada aroma kecil yang selalu diam-diam membawaku kembali padamu.</p>
+              <small>Klik untuk membuka hal kecil</small>
+            </article>
+            <article class="zone" data-zone="sky">
+              <h3>☁️ Langit yang sama</h3>
+              <p>Saat aku melihat langit, aku sering berpikir: apakah kamu juga sedang melihat langit yang sama?</p>
+              <small>Klik untuk membuka harapan</small>
+            </article>
+            <article class="zone" data-zone="beach">
+              <h3>🌊 Jejak pantai</h3>
+              <p>Ada tempat-tempat indah, seperti pantai yang tenang. Tapi ada juga orang yang membuatnya terasa lebih hidup.</p>
+              <small>Klik untuk membuka refleksi</small>
+            </article>
+            <article class="zone" data-zone="knitting">
+              <h3>🧶 Sudut rajut</h3>
+              <p>Aku selalu kagum bagaimana sesuatu yang sederhana seperti benang bisa berubah menjadi sesuatu yang indah di tanganmu.</p>
+              <small>Klik untuk membuka doa</small>
+            </article>
+            <article class="zone" data-zone="ayuCorner">
+              <h3>🪞 Sudut Ayu</h3>
+              <p>Di sini tersimpan hal-hal kecil yang membuatmu menjadi Ayu: kerudung, pipi, ritual angopan, dan cara kamu bicara.</p>
+              <small>Klik untuk membuka detail kecil</small>
+            </article>
+            <article class="zone" data-zone="deer">
+              <h3>🦌 Rusa kecil</h3>
+              <p>Seekor rusa kecil berlari di sudut taman, membawa kalimat-kalimat khas yang hanya Ayu yang bisa punya.</p>
+              <small>Klik untuk membuka easter egg</small>
+            </article>
+            <article class="zone" data-zone="warung">
+              <h3>🍜 Warung Ayu</h3>
+              <p>Soto Lamongan, mie ayam, takoyaki, jus alpukat, nangka — dan semua makanan yang bisa dimakan, halal, dan tidak beracun.</p>
+              <small>Klik untuk membuka daftar</small>
+            </article>
+          </div>
+
+          <div class="action-row">
+            <p class="status" id="unlockText">Tersisa beberapa sudut untuk dibuka.</p>
+            <button id="finalBtn" class="btn btn-primary" style="display:none;">Buka hadiah utama</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LETTER -->
+    <section class="screen" id="screen-letter">
+      <div class="card">
+        <div class="card-inner">
+          <span class="eyebrow">Untuk Sekar Ayu</span>
+          <h2 style="margin-top: 14px;">Surat kecil untukmu</h2>
+          <div class="letter" id="letterBox" style="margin-top: 16px;"></div>
+          <div class="sound-bar" style="margin-top: 18px;">
+            <button id="replayBtn" class="btn btn-secondary">Baca lagi dari awal</button>
+            <button id="closingBtn" class="btn btn-ghost">Lihat penutup terakhir</button>
+          </div>
+          <div class="footer-note">Happy Birthday, Sekar Ayu.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <button class="close" id="closeModal" aria-label="Tutup">×</button>
+      <h3 class="modal-title" id="modalTitle"></h3>
+      <div class="modal-text" id="modalText"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="closingModal">
+    <div class="modal-card" style="text-align:center;">
+      <button class="close" id="closeClosingModal" aria-label="Tutup">×</button>
+      <div style="padding-top: 8px;">
+        <span class="eyebrow">penutup</span>
+        <h2 style="margin-top: 14px;">Terima kasih telah lahir dan hadir, Ayu.</h2>
+        <p class="subtle" style="margin-top: 12px;">Sampai di sini, taman sudah selesai berbicara.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PIN = '14062005';
+
+    const screens = {
+      door: document.getElementById('screen-door'),
+      intro: document.getElementById('screen-intro'),
+      garden: document.getElementById('screen-garden'),
+      letter: document.getElementById('screen-letter')
+    };
+
+    const door = document.getElementById('door');
+    const pinInput = document.getElementById('pinInput');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const pinError = document.getElementById('pinError');
+    const enterGardenBtn = document.getElementById('enterGardenBtn');
+    const soundInfoBtn = document.getElementById('soundInfoBtn');
+    const chipsWrap = document.getElementById('chipsWrap');
+    const introOrnaments = document.getElementById('introOrnaments');
+    const gardenGrid = document.getElementById('gardenGrid');
+    const unlockText = document.getElementById('unlockText');
+    const finalBtn = document.getElementById('finalBtn');
+    const replayBtn = document.getElementById('replayBtn');
+    const closingBtn = document.getElementById('closingBtn');
+    const letterBox = document.getElementById('letterBox');
+    const modal = document.getElementById('modal');
+    const closeModal = document.getElementById('closeModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const closingModal = document.getElementById('closingModal');
+    const closingBtnClose = document.getElementById('closeClosingModal');
+
+    const chips = [
+      '🌷 tulip', '🌸 pink', '🌊 biru', '🦌 rusa', '🧶 rajut', '🚂 kereta', '🍓 stroberi', '☁️ langit'
+    ];
+
+    const zones = {
+      tulip: {
+        title: '🌷 Di antara tulip',
+        text: `Aku suka caramu menjadi dirimu sendiri, tanpa perlu berusaha menjadi orang lain.
+Aku suka cara berpikirmu yang cerdas, yang sering membuatku penasaran denganmu lebih lama.
+Aku suka caramu berjuang dan bertahan di perantauan ini.
+Aku suka sisi keibuanmu, yang membuat kehadiranmu terasa hangat.
+Aku memilih tulip karena kamu membuatku kembali berjalan di jalan yang sudah lama aku hindari—simbol awal kebahagiaan, kelembutan, dan kasih sayang.`
+      },
+      train: {
+        title: '🚂 Sudut stasiun kereta',
+        text: `Saat aku mendengar suara kereta, aku selalu ingat saat menjemput dan mengantarmu ke stasiun.
+Aku masih ingat momen-momen kecil itu—perpisahan singkat di peron, lalu pertemuan lagi yang terasa biasa, tapi ternyata sangat berarti.
+Bersamamu, suara kereta tidak pernah terdengar seperti suara biasa lagi.`
+      },
+      strawberry: {
+        title: '🍓 Jalur stroberi',
+        text: `Aku juga mencintai aroma kecutmu itu.
+Hal kecil yang mungkin terdengar iseng, tapi justru karena itu terasa sangat kamu.
+Ada banyak hal sederhana yang diam-diam menjadi alasan kenapa aku selalu teringat padamu.`
+      },
+      sky: {
+        title: '☁️ Langit yang sama',
+        text: `Saat aku melihat langit, aku sering berpikir apakah kamu juga sedang melihat langit yang sama.
+Kamu seperti pelangi saat hujan di dalam diriku berhenti.
+Kamu hadir seperti senja—hangat, lembut, dan menenangkan.`
+      },
+      beach: {
+        title: '🌊 Jejak pantai',
+        text: `Ada tempat-tempat yang indah, seperti pantai yang tenang.
+Tetapi beberapa tempat terasa lebih hidup karena mengingatkanku padamu.
+Dan entah kenapa, saat memikirkanmu, aku selalu merasa sedang berdiri di tempat yang damai.`
+      },
+      knitting: {
+        title: '🧶 Sudut rajut',
+        text: `Aku selalu kagum bagaimana sesuatu yang sederhana seperti benang bisa berubah menjadi sesuatu yang indah di tanganmu.
+Seperti itu juga doaku untukmu: perlahan, sabar, dan akhirnya menjadi sesuatu yang baik.
+Aku berdoa agar semua harapan dan yang kau doakan, yang terbaik untukmu, terkabul.`
+      },
+      ayuCorner: {
+        title: '🪞 Sudut Ayu',
+        text: `Ada banyak hal kecil yang membuatmu menjadi Ayu.
+Caramu merapikan kerudung.
+Caramu memainkan pipimu sendiri.
+Ritual angopanmu yang sampai sekarang masih kuingat.
+Caramu makan seperti hamster.
+Caramu mengatakan "eh", "hah", "yowi", "paham ga", "why kenapa", dan "yaitulah pokoknya".
+Caramu membalas pesan panjangku dengan:
+"ya gitu aja se"
+atau
+"nggakse, biasa aja."
+Hal-hal kecil yang mungkin tampak sederhana.
+Tapi justru hal-hal itulah yang membuatmu menjadi Ayu.`
+      },
+      deer: {
+        title: '🦌 Rusa kecil',
+        text: `Rusa kecil ini membawa beberapa kalimat yang hanya Ayu yang bisa punya.
+"eh"
+"hah"
+"why kenapa"
+"paham ga"
+"yaitulah pokoknya"
+
+Kadang hal paling lucu justru hal yang paling jujur.
+Dan kamu punya cara yang sangat khas untuk membuat kata-kata sederhana terasa hidup.`
+      },
+      warung: {
+        title: '🍜 Warung Ayu',
+        text: `Kalau ditanya makanan kesukaan Ayu, jawabannya tidak pernah sesederhana satu menu.
+Ada soto Lamongan, mie ayam, takoyaki, jus alpukat, nangka...
+Dan kalau mau diringkas dengan sangat Ayu: semua makanan yang bisa dimakan, halal, dan tidak beracun.
+
+Itu terasa terlalu tepat untuk tidak ditaruh di sini.`
+      }
+    };
+
+    const letter = `Selamat ulang tahun, Ayu.
+
+Awalnya aku ingin memberimu bunga.
+Tapi semakin kupikirkan, bunga akan layu. Jadi aku mencoba merangkai hal-hal yang selalu membuatku mengingatmu dan menyimpannya di tempat kecil ini.
+
+Sudah satu tahun aku mengenalmu, dan semakin lama aku mengenalmu, semakin banyak hal yang kusadari tentang dirimu.
+
+Hal pertama yang membuatku selalu memperhatikanmu adalah caramu berjalan. Menurutku caramu berjalan itu unik, lucu, dan cantik dalam waktu yang bersamaan. Aku juga selalu suka saat kamu tersenyum, karena tulang pipimu terlihat dan membuat senyummu terasa sangat manis.
+
+Di matamu, aku juga kadang melihat sesuatu yang lebih sunyi. Ada sisi yang tampak sedih, ada rasa lelah, ada kebingungan kecil, dan ada hari-hari ketika senyummu terasa tidak sepenuhnya ringan. Tapi justru di situ aku belajar sesuatu: bahwa kamu juga manusia yang sedang berjalan, bukan seseorang yang harus selalu terlihat kuat atau sempurna di hadapan dunia. Dan entah kenapa, bahkan di saat-saat seperti itu, perasaanku tidak berubah. Aku tetap melihatmu sebagai Ayu yang sama. Bahkan mungkin, semakin nyata.
+
+Lalu matamu.
+
+Aku tidak tahu bagaimana menjelaskannya dengan tepat, tetapi setiap kali melihat matamu, rasanya ada banyak hal yang hidup di sana. Ada kelembutan, ketegasan, kehangatan, keceriaan, dan kadang ada sisi baddie yang membuatku gemas sendiri.
+
+Tetapi kalau ada satu hal yang paling membuatku kagum, itu adalah cara berpikirmu.
+
+Aku selalu penasaran dengan cara kamu melihat dunia. Aku kagum pada kecerdasanmu, pada caramu menghadapi masalah, pada caramu bertahan di perantauan ini, dan pada caramu terus berjalan bahkan ketika keadaan tidak selalu mudah.
+
+Aku juga kagum pada sifat keibuanmu. Entah kenapa, kehadiranmu sering terasa hangat. Seperti ada ketenangan yang datang bersamamu.
+
+Kalau harus menggambarkanmu dengan bunga, aku akan memilih lebih dari satu bunga.
+
+Bunga matahari, karena kamu tumbuh dengan kuat dan bersinar dengan caramu sendiri.
+
+Tulip, karena kamu membuatku kembali berjalan di jalan yang sudah lama kuhindari. Kamu mengingatkanku bahwa kelembutan, kasih sayang, dan kebahagiaan masih ada.
+
+Dan mungkin sedikit edelweis juga. Karena ada bagian dari dirimu yang terasa tenang, kuat, dan tetap indah meski harus menghadapi banyak hal.
+
+Ada juga banyak hal kecil tentangmu yang mungkin tidak kamu sadari, tetapi selalu kuingat.
+
+Caramu merapikan kerudung.
+Caramu memainkan pipimu sendiri.
+Ritual angopanmu.
+Caramu makan yang lucu seperti hamster.
+Caramu mengatakan "eh", "hah", "yowi", "paham ga", "why kenapa", dan "yaitulah pokoknya".
+Dan tentu saja, caramu membalas pesan-pesan panjangku dengan kalimat seperti:
+"ya gitu aja se"
+atau
+"nggakse, biasa aja."
+
+Kadang aku sudah menulis panjang lebar.
+Menyusun kata-kata dengan serius.
+Memikirkan kalimat terbaik.
+Lalu balasanmu datang.
+Dan hanya itu.
+Ayu banget.
+
+Aku juga menyimpan banyak kenangan tentangmu.
+Aku ingat momen pertama kita duduk di satu bangku.
+Aku ingat saat kamu bercerita tentang jatuh terpeleset dan tertimpa sepeda saat kelas FLA.
+Aku ingat Banyuwangi.
+Aku ingat jalan-jalan kecil dan percakapan-percakapan sederhana yang ternyata bertahan lama di ingatanku.
+Aku ingat suara tawamu.
+Aku ingat senyummu.
+Aku bahkan ingat marahmu.
+
+Dan aku tidak pernah menyangka bahwa suara kereta suatu hari akan menjadi sesuatu yang membuatku langsung mengingat seseorang.
+Tetapi sekarang begitu.
+Karena terlalu banyak perjalanan yang mengingatkanku padamu.
+Terlalu banyak momen menjemput dan mengantarmu yang berubah menjadi kenangan yang sangat berharga bagiku.
+
+Ada juga banyak hal lain yang selalu membawaku kembali kepadamu.
+Langit.
+Taman bunga.
+Pantai.
+Aroma stroberi.
+Dan bahkan, aku harus mengakuinya...
+aku mencintai aroma kecutmu itu juga.
+Hehe.
+
+Ada banyak orang yang memanggilku dengan namaku.
+Tetapi entah kenapa, ketika kamu memanggilku "Jaya", rasanya berbeda.
+Padahal sebenarnya aku tidak terlalu suka dipanggil begitu.
+Tetapi karena itu datang darimu, nama itu terdengar jauh lebih istimewa.
+
+Ayu,
+
+Di antara semua hal yang ingin kusampaikan hari ini, mungkin yang paling penting adalah rasa syukur.
+
+Aku sangat bersyukur aku memilihmu.
+Aku tidak salah pilih.
+Aku sangat bersyukur kamu mau membuka ruang untukku hadir di kehidupanmu.
+Aku sangat bersyukur kamu terus menjadi dirimu sendiri.
+Dan aku sangat bersyukur karena keberadaanmu telah memberi banyak warna dalam hidupku.
+
+Di usia yang baru ini, aku berharap kamu mendapatkan lebih banyak kesehatan, lebih banyak kebahagiaan, lebih banyak tawa, dan lebih banyak alasan untuk tersenyum.
+
+Aku berharap kamu selalu diberi kekuatan saat menghadapi hal-hal yang sulit.
+Aku berharap langkahmu dipenuhi keberkahan.
+Aku berharap jalanmu dipenuhi orang-orang baik.
+Aku berharap mimpi-mimpimu menemukan jalannya.
+Dan aku berharap tahun-tahun yang akan datang memperlakukanmu dengan lembut.
+
+Aku tahu tidak mungkin hidup tanpa kesedihan.
+Tetapi aku berdoa agar ketika hari-hari yang berat datang, kamu selalu diberi kekuatan untuk melaluinya.
+Aku berdoa agar kamu selalu menemukan alasan untuk bangkit.
+Aku berdoa agar kebahagiaan lebih sering datang mengetuk pintumu.
+Dan aku berdoa agar semua harapan yang kau simpan di dalam hati, semua doa yang kau panjatkan diam-diam, dan semua hal baik yang sedang kau perjuangkan, dapat terkabul dengan cara yang terbaik untukmu.
+
+Terima kasih sudah menjadi Ayu.
+Terima kasih sudah menjadi Sekar Ayu yang aku kenal selama satu tahun terakhir ini.
+Dan terima kasih karena telah mengizinkanku mengenalmu sedikit lebih dekat.
+
+Terima kasih telah lahir dan hadir, Ayu.`;
+
+    function showScreen(name) {
+      Object.values(screens).forEach(s => s.classList.remove('active'));
+      screens[name].classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function createOrnaments() {
+      introOrnaments.innerHTML = '';
+      const list = [
+        ['petal', '10%', '0s', '15s'],
+        ['petal', '22%', '2s', '18s'],
+        ['petal', '36%', '5s', '14s'],
+        ['spark', '50%', '1s', '12s'],
+        ['leaf', '64%', '4s', '13s'],
+        ['petal', '76%', '6s', '16s'],
+        ['dust', '88%', '3s', '11s'],
+        ['spark', '16%', '7s', '12s'],
+        ['leaf', '82%', '8s', '17s']
+      ];
+      list.forEach(([cls, left, delay, dur]) => {
+        const el = document.createElement('span');
+        el.className = cls;
+        el.style.left = left;
+        el.style.animationDelay = delay;
+        el.style.animationDuration = dur;
+        el.style.bottom = '-24px';
+        introOrnaments.appendChild(el);
+      });
+    }
+
+    function renderChips() {
+      chipsWrap.innerHTML = '';
+      chips.forEach(label => {
+        const el = document.createElement('span');
+        el.className = 'chip';
+        el.textContent = label;
+        chipsWrap.appendChild(el);
+      });
+    }
+
+    function openModal(title, text) {
+      modalTitle.textContent = title;
+      modalText.textContent = text;
+      modal.classList.add('active');
+    }
+
+    function closeModalFn() {
+      modal.classList.remove('active');
+    }
+
+    function closeClosingModalFn() {
+      closingModal.classList.remove('active');
+    }
+
+    function updateProgress() {
+      const total = Object.keys(zones).length;
+      const done = opened.size;
+      unlockText.textContent = done < total
+        ? `Tersisa ${total - done} sudut untuk dibuka.`
+        : 'Semua sudut telah terbuka. Hadiah utama menunggu.';
+      finalBtn.style.display = done >= total ? 'inline-flex' : 'none';
+    }
+
+    const opened = new Set();
+
+    function unlockZone(key) {
+      if (!zones[key]) return;
+      opened.add(key);
+      updateProgress();
+      openModal(zones[key].title, zones[key].text);
+    }
+
+    unlockBtn.addEventListener('click', () => {
+      const value = pinInput.value.trim();
+      if (value === PIN) {
+        pinError.textContent = '';
+        door.classList.add('open');
+        setTimeout(() => showScreen('intro'), 720);
+      } else {
+        pinError.textContent = 'PIN belum tepat. Coba lagi dengan format 14062005.';
+      }
+    });
+
+    pinInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') unlockBtn.click();
+    });
+
+    enterGardenBtn.addEventListener('click', () => showScreen('garden'));
+    soundInfoBtn.addEventListener('click', () => {
+      openModal('🎵 Suara', 'Nanti kita bisa tambahkan suara kereta, ombak, angin, atau musik lembut ke tiap sudut.
+Untuk versi ini, suaranya belum dipasang agar taman tetap bersih dan ringan.');
+    });
+
+    gardenGrid.addEventListener('click', e => {
+      const zone = e.target.closest('.zone');
+      if (!zone) return;
+      unlockZone(zone.dataset.zone);
+    });
+
+    finalBtn.addEventListener('click', () => {
+      letterBox.textContent = letter;
+      showScreen('letter');
+    });
+
+    replayBtn.addEventListener('click', () => {
+      opened.clear();
+      updateProgress();
+      pinInput.value = '';
+      door.classList.remove('open');
+      showScreen('door');
+      pinInput.focus();
+    });
+
+    closingBtn.addEventListener('click', () => closingModal.classList.add('active'));
+    closeClosingModalBtn.addEventListener('click', closeClosingModalFn);
+
+    closeModal.addEventListener('click', closeModalFn);
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeModalFn();
+    });
+
+    closingModal.addEventListener('click', e => {
+      if (e.target === closingModal) closeClosingModalFn();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        closeModalFn();
+        closeClosingModalFn();
+      }
+    });
+
+    renderChips();
+    createOrnaments();
+    updateProgress();
+    pinInput.focus();
+  </script>
+</body>
+</html>
