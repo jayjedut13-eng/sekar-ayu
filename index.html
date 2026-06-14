@@ -970,7 +970,9 @@ Terima kasih telah lahir dan hadir, Ayu.`;
       openModal(zones[key].title, zones[key].text);
     }
 
+    console.log('unlock button aktif');
     unlockBtn.addEventListener('click', () => {
+      console.log(pinInput.value);
       const value = pinInput.value.trim();
       if (value === PIN) {
         pinError.textContent = '';
